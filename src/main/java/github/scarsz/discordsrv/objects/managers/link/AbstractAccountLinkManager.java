@@ -1,7 +1,7 @@
 /*
  * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
  *
- * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ * Copyright (C) 2016 - 2024 Austin "Scarsz" Shapiro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -47,7 +47,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AbstractAccountLinkManager extends AccountLinkManager {
+public abstract class AbstractAccountLinkManager implements AccountLinkManager {
 
     @Getter
     protected final Map<String, UUID> linkingCodes = new ConcurrentHashMap<>();
@@ -124,7 +124,7 @@ public abstract class AbstractAccountLinkManager extends AccountLinkManager {
         } else {
             String roleName = DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo");
             try {
-                Role roleToAdd = DiscordUtil.getJda().getRolesByName(roleName, true).stream().findFirst().orElse(null);
+                Role roleToAdd = DiscordUtil.resolveRole(roleName);
                 if (roleToAdd != null) {
                     Member member = roleToAdd.getGuild().getMemberById(discordId);
                     if (member != null) {
@@ -152,7 +152,7 @@ public abstract class AbstractAccountLinkManager extends AccountLinkManager {
         } else {
             try {
                 // remove user from linked role
-                Role role = DiscordUtil.getJda().getRolesByName(DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"), true).stream().findFirst().orElse(null);
+                Role role = DiscordUtil.resolveRole(DiscordSRV.config().getString("MinecraftDiscordAccountLinkedRoleNameToAddUserTo"));
                 if (role != null) {
                     Member member = role.getGuild().getMemberById(discordId);
                     if (member != null) {
@@ -205,4 +205,5 @@ public abstract class AbstractAccountLinkManager extends AccountLinkManager {
             DiscordSRV.getPlugin().getRequireLinkModule().noticePlayerUnlink(player);
         }
     }
+
 }

@@ -1,7 +1,7 @@
 /*
  * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
  *
- * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ * Copyright (C) 2016 - 2024 Austin "Scarsz" Shapiro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -33,6 +33,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class DiscordBanListener extends ListenerAdapter {
@@ -55,7 +56,9 @@ public class DiscordBanListener extends ListenerAdapter {
         }
 
         String reason = LangUtil.Message.BAN_DISCORD_TO_MINECRAFT.toString();
-        Bukkit.getBanList(BanList.Type.NAME).addBan(offlinePlayer.getName(), reason, null, "Discord");
+        BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+        if (banList.isBanned(offlinePlayer.getName())) return; // if they are already banned we don't want to overwrite the original ban reason
+        banList.addBan(offlinePlayer.getName(), reason, (Date) null, "Discord");
         if (offlinePlayer.isOnline()) {
             // also kick them because adding them to the BanList isn't enough
             Player player = offlinePlayer.getPlayer();

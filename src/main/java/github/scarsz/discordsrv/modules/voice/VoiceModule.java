@@ -1,7 +1,7 @@
 /*
  * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
  *
- * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ * Copyright (C) 2016 - 2024 Austin "Scarsz" Shapiro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -80,14 +80,17 @@ public class VoiceModule extends ListenerAdapter implements Listener {
                     SchedulerUtil.runTaskTimerAsynchronously(
                             DiscordSRV.getPlugin(),
                             this::tick,
-                            0,
+                            1,
                             DiscordSRV.config().getInt("Tick speed")
                     ),
-                    0
+                    1
             );
         }
 
-        Category category = DiscordSRV.getPlugin().getJda().getCategoryById(DiscordSRV.config().getString("Voice category"));
+        String categoryId = DiscordSRV.config().getString("Voice category");
+        if (StringUtils.isBlank(categoryId)) return;
+
+        Category category = DiscordSRV.getPlugin().getJda().getCategoryById(categoryId);
         if (category != null) {
             category.getVoiceChannels().stream()
                     .filter(channel -> {
@@ -231,7 +234,7 @@ public class VoiceModule extends ListenerAdapter implements Listener {
                         })
                         .map(Player::getUniqueId)
                         .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-                if (playersWithinRange.size() > 0) {
+                if (!playersWithinRange.isEmpty()) {
                     if (category.getChannels().size() == 50) {
                         DiscordSRV.debug(Debug.VOICE, "Can't create new voice network because category " + category.getName() + " is full of channels");
                         continue;

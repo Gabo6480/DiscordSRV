@@ -1,7 +1,7 @@
 /*
  * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
  *
- * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ * Copyright (C) 2016 - 2024 Austin "Scarsz" Shapiro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -47,7 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utility class for sending & editing messages from/for CommandSenders.
+ * Utility class for sending &amp; editing messages from/for CommandSenders.
  * Utilizes both MiniMessage and Minecraft's legacy formatting style.
  */
 public class MessageUtil {
@@ -76,7 +76,7 @@ public class MessageUtil {
      * Pattern for capturing both ampersand and the legacy section sign color codes.
      * @see #LEGACY_SECTION
      */
-    public static final Pattern STRIP_PATTERN = Pattern.compile("(?<!<@)[&§\u007F](?i)[0-9a-fklmnorx]");
+    public static final Pattern STRIP_PATTERN = Pattern.compile("(?:(?<!<@)&|[§\u007F])(?i)[0-9a-fklmnorx]");
 
     /**
      * Pattern for capturing section sign color codes.
@@ -85,7 +85,7 @@ public class MessageUtil {
     public static final Pattern STRIP_SECTION_ONLY_PATTERN = Pattern.compile("(?<!<@)§(?i)[0-9a-fklmnorx]");
 
     /**
-     * Pattern for translating color codes (legacy & adventure), excluding role mentions ({@code <@&role id>}).
+     * Pattern for translating color codes (legacy &amp; adventure), excluding role mentions ({@code <@&amp;role id>}).
      */
     public static final Pattern TRANSLATE_PATTERN = Pattern.compile("(?<!<@)(&)(?i)(?:[0-9a-fklmnorx]|#[0-9a-f]{6})");
 
@@ -366,7 +366,7 @@ public class MessageUtil {
     }
 
     /**
-     * Strips the given String of legacy Minecraft coloring (both & and §).
+     * Strips the given String of legacy Minecraft coloring (both &amp; and §).
      *
      * @param text the given String to strip colors and formatting from
      * @return the given String with coloring and formatting stripped
@@ -405,7 +405,7 @@ public class MessageUtil {
     }
 
     /**
-     * Strip the given String of legacy Minecraft coloring (both & and §). Useful for sending things to Discord.
+     * Strip the given String of legacy Minecraft coloring (both &amp; and §). Useful for sending things to Discord.
      *
      * @param text the given String to strip colors from
      * @return the given String with coloring stripped
@@ -433,7 +433,7 @@ public class MessageUtil {
     }
 
     /**
-     * Translates ampersand (&) characters into section signs (§) for color codes. Ignores role mentions.
+     * Translates ampersand (&amp;) characters into section signs (§) for color codes. Ignores role mentions.
      *
      * @param text the input text
      * @return the output text

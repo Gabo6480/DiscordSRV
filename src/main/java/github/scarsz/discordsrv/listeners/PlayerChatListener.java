@@ -1,7 +1,7 @@
 /*
  * DiscordSRV - https://github.com/DiscordSRV/DiscordSRV
  *
- * Copyright (C) 2016 - 2022 Austin "Scarsz" Shapiro
+ * Copyright (C) 2016 - 2024 Austin "Scarsz" Shapiro
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -37,12 +37,14 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
+        String message = event.getMessage();
+        boolean isCancelled = event.isCancelled();
         SchedulerUtil.runTaskAsynchronously(DiscordSRV.getPlugin(), () ->
                 DiscordSRV.getPlugin().processChatMessage(
                         event.getPlayer(),
-                        event.getMessage(),
+                        message,
                         DiscordSRV.getPlugin().getOptionalChannel("global"),
-                        event.isCancelled(),
+                        isCancelled,
                         event
                 )
         );
